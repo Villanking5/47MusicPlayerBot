@@ -80,8 +80,8 @@ BUTTONS = InlineKeyboardMarkup(
 
 @bot.on_callback_query()
 async def callbacks(_, cq: CallbackQuery): 
-    if cq.from_user.id != OWNER_ID:
-        return await cq.answer("You aren't the owner of me.")   
+    #if cq.from_user.id != OWNER_ID:
+    #    return await cq.answer("You aren't the owner of me.")   
     chat_id = cq.message.chat.id
     data = cq.data
     if data == "close":
@@ -137,10 +137,10 @@ async def start_group(_, message):
 
 @bot.on_message(filters.command("play") & filters.group)
 async def music_play(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     try:
         query = message.text.split(None, 1)[1]
     except:
@@ -186,10 +186,10 @@ async def music_play(_, message):
     
 @bot.on_message(filters.command("video") & filters.group)
 async def video_play(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     try:
         query = message.text.split(None, 1)[1]
     except:
@@ -235,10 +235,10 @@ async def video_play(_, message):
 
 @bot.on_message(filters.command("stop") & filters.group)
 async def end(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     chat_id = message.chat.id
     if str(chat_id) in CHATS:
         await app.leave_group_call(chat_id)
@@ -250,10 +250,10 @@ async def end(_, message):
 
 @bot.on_message(filters.command("pause") & filters.group)
 async def pause(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     chat_id = message.chat.id
     if str(chat_id) in CHATS:
         try:
@@ -267,10 +267,10 @@ async def pause(_, message):
         
 @bot.on_message(filters.command("resume") & filters.group)
 async def resume(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     chat_id = message.chat.id
     if str(chat_id) in CHATS:
         try:
@@ -284,10 +284,10 @@ async def resume(_, message):
         
 @bot.on_message(filters.command("mute") & filters.group)
 async def mute(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     chat_id = message.chat.id
     if str(chat_id) in CHATS:
         try:
@@ -301,10 +301,10 @@ async def mute(_, message):
         
 @bot.on_message(filters.command("unmute") & filters.group)
 async def unmute(_, message):
-    await message.delete()
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #await message.delete()
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     chat_id = message.chat.id
     if str(chat_id) in CHATS:
         try:
@@ -318,9 +318,9 @@ async def unmute(_, message):
         
 @bot.on_message(filters.command("restart"))
 async def restart(_, message):
-    user_id = message.from_user.id
-    if user_id != OWNER_ID:
-        return
+    #user_id = message.from_user.id
+    #if user_id != OWNER_ID:
+    #    return
     await message.reply_text("🛠 <i>Restarting Music Player...</i>")
     os.system(f"kill -9 {os.getpid()} && python3 app.py")
             
