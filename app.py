@@ -184,7 +184,7 @@ async def music_play(_, message):
         return await m.edit(str(e))
     
     
-@bot.on_message(filters.command("video") & filters.group)
+@bot.on_message(filters.command("vplay") & filters.group)
 async def video_play(_, message):
     #await message.delete()
     #user_id = message.from_user.id
