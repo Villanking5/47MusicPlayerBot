@@ -1,18 +1,14 @@
 """
 MIT License
-
 Copyright (c) 2021 Janindu Malshan
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +45,6 @@ OWNER_ID = int(os.environ["OWNER_ID"])
 START_TEXT = """
 Hi <b>{}</b> 👋
 I can play music in Telegram group voice chats. 
-
 <i>Only my owner can operate me. Make your own bot from the source code.</i>
 """
 
@@ -146,7 +141,6 @@ async def music_play(_, message):
     except:
         return await message.reply_text("<b>Usage:</b> <code>/play [query]</code>")
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
     m = await message.reply_text("🔄 Processing...")
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
@@ -166,7 +160,7 @@ async def music_play(_, message):
     try:
         if str(chat_id) in CHATS:
             await app.change_stream(
-                cnl_id,
+                chat_id,
                 AudioPiped(aud)
             )
             await message.reply_photo(thumb, caption=cap, reply_markup=BUTTONS)
@@ -174,7 +168,7 @@ async def music_play(_, message):
             os.remove(aud)
         else:            
             await app.join_group_call(
-                cnl_id,
+                chat_id,
                 AudioPiped(aud)
             )
             CHATS.append(str(chat_id))
@@ -196,7 +190,6 @@ async def video_play(_, message):
     except:
         return await message.reply_text("<b>Usage:</b> <code>/video [query]</code>")
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
     m = await message.reply_text("🔄 Processing...")
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
@@ -216,7 +209,7 @@ async def video_play(_, message):
     try:
         if str(chat_id) in CHATS:
             await app.change_stream(
-                cnl_id,
+                chat_id,
                 AudioVideoPiped(vid)
             )
             await message.reply_photo(thumb, caption=cap, reply_markup=BUTTONS)
@@ -224,7 +217,7 @@ async def video_play(_, message):
             os.remove(vid)
         else:            
             await app.join_group_call(
-                cnl_id,
+                chat_id,
                 AudioVideoPiped(vid)
             )
             CHATS.append(str(chat_id))
@@ -242,9 +235,8 @@ async def end(_, message):
     #if user_id != OWNER_ID:
     #    return
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
-    if str(cnl_id) in CHATS:
-        await app.leave_group_call(cnl_id)
+    if str(chat_id) in CHATS:
+        await app.leave_group_call(chat_id)
         CHATS.clear()
         await message.reply_text("⏹ Stopped streaming.")
     else:
@@ -258,10 +250,9 @@ async def pause(_, message):
     #if user_id != OWNER_ID:
     #    return
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
-    if str(cnl_id) in CHATS:
+    if str(chat_id) in CHATS:
         try:
-            await app.pause_stream(cnl_id)
+            await app.pause_stream(chat_id)
             await message.reply_text("⏸ Paused streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
@@ -276,10 +267,9 @@ async def resume(_, message):
     #if user_id != OWNER_ID:
     #    return
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
-    if str(cnl_id) in CHATS:
+    if str(chat_id) in CHATS:
         try:
-            await app.resume_stream(cnl_id)
+            await app.resume_stream(chat_id)
             await message.reply_text("⏸ Resumed streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
@@ -294,10 +284,9 @@ async def mute(_, message):
     #if user_id != OWNER_ID:
     #    return
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
-    if str(cnl_id) in CHATS:
+    if str(chat_id) in CHATS:
         try:
-            await app.mute_stream(cnl_id)
+            await app.mute_stream(chat_id)
             await message.reply_text("🔇 Muted streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
@@ -312,10 +301,9 @@ async def unmute(_, message):
     #if user_id != OWNER_ID:
     #    return
     chat_id = message.chat.id
-    cnl_id = ("-1001457585374")
-    if str(cnl_id) in CHATS:
+    if str(chat_id) in CHATS:
         try:
-            await app.unmute_stream(cnl_id)
+            await app.unmute_stream(chat_id)
             await message.reply_text("🔊 Unmuted streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
@@ -325,9 +313,9 @@ async def unmute(_, message):
         
 @bot.on_message(filters.command("restart"))
 async def restart(_, message):
-    #user_id = message.from_user.id
-    #if user_id != OWNER_ID:
-    #    return
+    user_id = message.from_user.id
+    if user_id != OWNER_ID:
+        return
     await message.reply_text("🛠 <i>Restarting Music Player...</i>")
     os.system(f"kill -9 {os.getpid()} && python3 app.py")
             
